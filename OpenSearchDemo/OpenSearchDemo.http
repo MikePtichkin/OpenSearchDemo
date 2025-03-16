@@ -1,0 +1,6 @@
+@OpenSearchDemo_HostAddress = http://localhost:5023
+
+GET {{OpenSearchDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
