@@ -1,47 +1,25 @@
-﻿version: '3.8'
-
-services:
-  opensearch-node1:
-    image: opensearchproject/opensearch:latest
-    container_name: opensearch-node1
+﻿services:
+  aspire-dashboard:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.2.1
+    container_name: aspire-dashboard
     environment:
-      - cluster.name=opensearch-cluster
-      - node.name=opensearch-node1
-      - discovery.seed_hosts=opensearch-node1
-      - cluster.initial_cluster_manager_nodes=opensearch-node1
-      - bootstrap.memory_lock=true
-      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
-      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=Quintry@1234!
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
+      Dashboard__Frontend__AuthMode: Unsecured
+      DASHBOARD__OTLP__AUTHMODE: ApiKey
+      DASHBOARD__OTLP__PRIMARYAPIKEY: 18219ff089b2ca6a7249f8f54d0661c6
+    ports:
+     - 18888:18888  # Dashboard UI
+     - 18889:18889  # OTLP/gRPC
+     - 18890:18890  # OTLP/HTTP (на всякий случай)
     volumes:
-      - opensearch-data1:/usr/share/opensearch/data
-    ports:
-      - 9200:9200
-      - 9600:9600
+      - aspire-dataprotection-keys:/keys
     networks:
-      - opensearch-net
-      
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
-    ports:
-      - 5601:5601
-    expose:
-      - '5601'
-    environment:
-      OPENSEARCH_HOSTS: '["https://opensearch-node1:9200"]'
-    networks:
-      - opensearch-net
-      
+     - otel-net
+
 volumes:
-  opensearch-data1:
+  aspire-dataprotection-keys:
 
 networks:
-  opensearch-net:
+  otel-net:
+    name: "otel-net"
+    driver: bridge
     

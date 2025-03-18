@@ -2,49 +2,26 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoints: "0.0.0.0:4317"
       http:
-        endpoint: "0.0.0.0:4318"
-
-exporters:
-  logging:
-    logLevel: debug
-  jaeger:
-    endpoint: "jaeger:14250"
-    insecure: true
-  opensearch:
-    logs:
-      endpoints: ["http://opensearch-edc:9200"]
-      logs_index: "app-logs"
-      auth:
-        username: "admin"
-        password: "Quintry@1234!" # Пароль из docker-compose.yml
 
 processors:
   batch:
-  attributes:
-    actions:
-      - key: "traceLink"
-        action: insert
-        value: 'http://localhost:16686/trace/${traceId}' # Гиперссылка для Jaeger
-        
-  # Если traceId хранится в атрибутах лога (а не в body):
-  resource:
-    attributes:
-      - key: "traceId"
-        from_attribute: "traceId" # Предполагается что traceId уже есть в атрибутах лога 
+    timeout: 5s
+    send_batch_size: 1000
+
+exporters:
+  elasticsearch:
+    logs:
+      endpoints: ["https://opensearch-node1:9200"]
+      user: "admin"
+      password: "Quintry@1234!" # Пароль из docker-compose.yml
+      tls:
+        insecure: true
+
 
 service:
   pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [jaeger]
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [logging]
     logs:
       receivers: [otlp]
-      processors: [batch, attributes] # Добавляем процессор для traceId
-      exporters: [opensearch, logging]
+      processors: [batch]
+      exporters: [elasticsearch]
