@@ -7,17 +7,12 @@
       DASHBOARD__OTLP__AUTHMODE: ApiKey
       DASHBOARD__OTLP__PRIMARYAPIKEY: 18219ff089b2ca6a7249f8f54d0661c6
     ports:
-     - 18888:18888  # Dashboard UI
-     - 18889:18889  # OTLP/gRPC
-     - 18890:18890  # OTLP/HTTP (на всякий случай)
-    volumes:
-      - aspire-dataprotection-keys:/keys
+      - 18888:18888
+      - 18889:18889
+      - 18890:18890
     networks:
-     - otel-net
-
-volumes:
-  aspire-dataprotection-keys:
-
+      - otel-net
+      
 networks:
   otel-net:
     name: "otel-net"

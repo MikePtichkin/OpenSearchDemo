@@ -6,13 +6,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:18889/v1/logs",
-        "OTEL_EXPORTER_OTLP_HEADERS": "x-otlp-api-key=18219ff089b2ca6a7249f8f54d0661c6",
-        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "disk",
-        "OTEL_DOTNET_EXPERIMENTAL_OTLP_DISK_RETRY_DIRECTORY_PATH": "D:\\otel\\retry_storage",
-        // если логи все направить не через серилог а через OTLP
-        // приоритет 1 - через серилог, 2 - все завернуть через OpenTlemetry. Тут нужно проверить недостатчки что мы теряем
-        // 3 вариант - локальный коллектор на заводе рядом с агентом.
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317",
+        //"OTEL_EXPORTER_OTLP_HEADERS": "x-otlp-api-key=18219ff089b2ca6a7249f8f54d0661c6",
         "OTEL_SERVICE_NAME": "OpenSearchDemo.Api"
       },
       "dotnetRunMessages": true,

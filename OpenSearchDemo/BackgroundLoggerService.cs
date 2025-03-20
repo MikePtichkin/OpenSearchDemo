@@ -15,7 +15,7 @@ public class BackgroundLoggerService : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Starting background logging service");
-        _timer = new Timer(LogCurrentTime, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
+        _timer = new Timer(LogCurrentTime, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
         return Task.CompletedTask;
     }
 
